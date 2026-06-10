@@ -1,0 +1,169 @@
+commit f764991558a2e20dca02704203abc9672c56c6da
+Author:     Marvin Street <marvinestreet@pm.me>
+AuthorDate: Mon Jun 8 19:33:29 2026 -0500
+Commit:     Marvin Street <marvinestreet@pm.me>
+CommitDate: Mon Jun 8 19:33:29 2026 -0500
+
+    formatting nitpick
+
+M	DevOps Interview AWS Exercise.md
+
+commit 90be90d730dc68bb84d11fd3997db1d47e1dd13d
+Author:     Marvin Street <marvinestreet@pm.me>
+AuthorDate: Mon Jun 8 18:54:42 2026 -0500
+Commit:     Marvin Street <marvinestreet@pm.me>
+CommitDate: Mon Jun 8 18:54:42 2026 -0500
+
+    checking off boxes
+
+M	DevOps Interview AWS Exercise.md
+
+commit f57f4a2f0a51426018ee70e15cfa76f8600988d0
+Author:     Marvin Street <7646417+marvinestreet@users.noreply.github.com>
+AuthorDate: Mon Jun 8 18:39:27 2026 -0500
+Commit:     GitHub <noreply@github.com>
+CommitDate: Mon Jun 8 18:39:27 2026 -0500
+
+    gha setup (#1)
+    
+    * gha setup
+    
+    * fixing provider hashes
+    
+    * ruby version
+    
+    * platform locks
+    
+    * Allowlist Rack::Test host so host_authorization doesn't 403 every test
+    
+    ---------
+    
+    Co-authored-by: Marvin Street <marvinestreet@pm.me>
+
+A	.github/workflows/deploy.yml
+A	.github/workflows/terraform.yml
+A	.github/workflows/test.yml
+A	.ruby-version
+M	Gemfile.lock
+M	terraform/.justfile
+M	terraform/app_deploy/.terraform.lock.hcl
+M	terraform/app_deploy/main.tf
+M	terraform/app_deploy/variables.tf
+M	terraform/app_deploy/versions.tf
+M	terraform/bootstrap/.terraform.lock.hcl
+A	terraform/bootstrap/gha.tf
+M	terraform/bootstrap/main.tf
+M	terraform/bootstrap/outputs.tf
+M	terraform/bootstrap/variables.tf
+M	terraform/infra/.terraform.lock.hcl
+M	terraform/infra/main.tf
+M	terraform/infra/variables.tf
+M	terraform/infra/versions.tf
+M	test/test_helper.rb
+
+commit eb0a0925a258e0215d4bd9c5c867f4e9e492d0b2
+Author:     Marvin Street <marvinestreet@pm.me>
+AuthorDate: Mon Jun 8 17:17:38 2026 -0500
+Commit:     Marvin Street <marvinestreet@pm.me>
+CommitDate: Mon Jun 8 17:17:38 2026 -0500
+
+    Claude fixed ruby app permissions
+
+M	app.rb
+A	terraform/app_deploy/.terraform.lock.hcl
+A	terraform/app_deploy/ecs.tf
+A	terraform/app_deploy/outputs.tf
+A	terraform/infra/.terraform.lock.hcl
+
+commit d16c529976091ae86dd824addca21a25aad7a862
+Author:     Marvin Street <marvinestreet@pm.me>
+AuthorDate: Mon Jun 8 15:32:51 2026 -0500
+Commit:     Marvin Street <marvinestreet@pm.me>
+CommitDate: Mon Jun 8 15:32:51 2026 -0500
+
+    just checking in work at this point
+
+M	app.rb
+M	terraform/.justfile
+M	terraform/app_deploy/main.tf
+M	terraform/app_deploy/variables.tf
+M	terraform/app_deploy/versions.tf
+D	terraform/bootstrap/TF_PLAN
+M	terraform/infra/ecs.tf
+M	terraform/infra/main.tf
+M	terraform/infra/outputs.tf
+M	terraform/infra/variables.tf
+
+commit 0b4b049263e7fe67cd7a4ae4a6bcf0adbfc3bdf1
+Author:     Marvin Street <marvinestreet@pm.me>
+AuthorDate: Mon Jun 8 12:40:30 2026 -0500
+Commit:     Marvin Street <marvinestreet@pm.me>
+CommitDate: Mon Jun 8 12:40:30 2026 -0500
+
+    nitpicking paths
+
+A	terraform/app_deploy/main.tf
+A	terraform/app_deploy/variables.tf
+R082	terraform/deploy/versions.tf	terraform/app_deploy/versions.tf
+D	terraform/deploy/main.tf
+D	terraform/deploy/variables.tf
+R100	terraform/deploy/alb.tf	terraform/infra/alb.tf
+R100	terraform/deploy/ecr.tf	terraform/infra/ecr.tf
+R100	terraform/deploy/ecs.tf	terraform/infra/ecs.tf
+R100	terraform/deploy/iam.tf	terraform/infra/iam.tf
+R100	terraform/deploy/logs.tf	terraform/infra/logs.tf
+M	terraform/infra/main.tf
+R100	terraform/deploy/outputs.tf	terraform/infra/outputs.tf
+R100	terraform/deploy/rds.tf	terraform/infra/rds.tf
+R100	terraform/deploy/secrets.tf	terraform/infra/secrets.tf
+R100	terraform/deploy/security_groups.tf	terraform/infra/security_groups.tf
+M	terraform/infra/variables.tf
+M	terraform/infra/versions.tf
+R100	terraform/deploy/vpc.tf	terraform/infra/vpc.tf
+
+commit 7c6c025a1489310acb23dac5c22b536c74530b1e
+Author:     Marvin Street <marvinestreet@pm.me>
+AuthorDate: Mon Jun 8 12:38:10 2026 -0500
+Commit:     Marvin Street <marvinestreet@pm.me>
+CommitDate: Mon Jun 8 12:38:10 2026 -0500
+
+    claude's work for your review
+
+A	terraform/deploy/alb.tf
+A	terraform/deploy/ecr.tf
+A	terraform/deploy/ecs.tf
+A	terraform/deploy/iam.tf
+A	terraform/deploy/logs.tf
+M	terraform/deploy/main.tf
+A	terraform/deploy/outputs.tf
+A	terraform/deploy/rds.tf
+A	terraform/deploy/secrets.tf
+A	terraform/deploy/security_groups.tf
+M	terraform/deploy/variables.tf
+M	terraform/deploy/versions.tf
+A	terraform/deploy/vpc.tf
+A	terraform/infra/main.tf
+A	terraform/infra/variables.tf
+A	terraform/infra/versions.tf
+
+commit 1a6931ddb239fa4fa409d87c37ce805a1ae3de93
+Author:     Marvin Street <marvinestreet@pm.me>
+AuthorDate: Mon Jun 8 12:12:04 2026 -0500
+Commit:     Marvin Street <marvinestreet@pm.me>
+CommitDate: Mon Jun 8 12:12:04 2026 -0500
+
+    adding preliminary work
+
+A	.gitignore
+A	DevOps Interview AWS Exercise.md
+A	terraform/.justfile
+A	terraform/.tflint.hcl
+A	terraform/bootstrap/.terraform.lock.hcl
+A	terraform/bootstrap/TF_PLAN
+A	terraform/bootstrap/main.tf
+A	terraform/bootstrap/outputs.tf
+A	terraform/bootstrap/variables.tf
+A	terraform/bootstrap/versions.tf
+A	terraform/deploy/main.tf
+A	terraform/deploy/variables.tf
+A	terraform/deploy/versions.tf

@@ -1,0 +1,111 @@
+# Plan-on-PR / apply-on-main for the durable infra stack.
+#
+# - PRs touching terraform/infra/** run fmt + validate + tflint + plan, and the
+#   plan output is posted as a sticky PR comment.
+# - Pushes to main matching the same paths run apply.
+# - The bootstrap stack is intentionally not driven from CI: it owns the OIDC
+#   role this workflow assumes, so applying it from here would be circular.
+# - app_deploy is driven by deploy.yml, not here, so a tf-only PR doesn't
+#   accidentally roll the ECS service back to image_tag=latest.
+name: terraform
+
+on:
+  pull_request:
+    paths:
+      - "terraform/infra/**"
+      - ".github/workflows/terraform.yml"
+  push:
+    branches: [main]
+    paths:
+      - "terraform/infra/**"
+      - ".github/workflows/terraform.yml"
+
+permissions:
+  id-token: write   # required for OIDC
+  contents: read
+  pull-requests: write  # for the plan comment
+
+# Serialize applies against the same state file. Plans on PRs share the
+# PR-scoped group so re-pushes cancel in-flight plans.
+concurrency:
+  group: tf-infra-${{ github.event_name == 'pull_request' && github.head_ref || 'main' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  AWS_REGION: us-west-2
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "0"
+  # Override the tfvars default (which is "monami" for local dev) so the
+  # provider falls back to env-based creds from configure-aws-credentials.
+  TF_VAR_profile: ""
+
+jobs:
+  terraform:
+    name: infra
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/infra
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/monami-gha-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.0
+          terraform_wrapper: false
+
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: terraform fmt
+        run: terraform fmt -check -recursive
+
+      - name: terraform init
+        run: terraform init -lockfile=readonly
+
+      - name: terraform validate
+        run: terraform validate
+
+      - name: tflint
+        run: |
+          tflint --init
+          tflint
+
+      - name: terraform plan
+        id: plan
+        run: |
+          set -o pipefail
+          terraform plan -no-color -out=tfplan | tee plan.txt
+
+      - name: comment plan on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('terraform/infra/plan.txt', 'utf8');
+            // GitHub PR comments cap at 65k chars; trim the head if needed.
+            const max = 60000;
+            const body = `### Terraform plan — \`infra\`\n\n<details><summary>Plan output</summary>\n\n\`\`\`hcl\n${plan.length > max ? plan.slice(-max) : plan}\n\`\`\`\n\n</details>`;
+            const {owner, repo} = context.repo;
+            const issue_number = context.issue.number;
+            const marker = '<!-- tf-plan:infra -->';
+            const comments = await github.rest.issues.listComments({owner, repo, issue_number});
+            const existing = comments.data.find(c => c.body.includes(marker));
+            const payload = `${marker}\n${body}`;
+            if (existing) {
+              await github.rest.issues.updateComment({owner, repo, comment_id: existing.id, body: payload});
+            } else {
+              await github.rest.issues.createComment({owner, repo, issue_number, body: payload});
+            }
+
+      - name: terraform apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve tfplan

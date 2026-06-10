@@ -1,0 +1,38 @@
+# Ruby unit tests on PRs. Gating signal for deploy.yml — if these fail, the
+# merge shouldn't happen, and deploy.yml won't fire.
+name: test
+
+on:
+  pull_request:
+    paths:
+      - "app.rb"
+      - "config.ru"
+      - "Gemfile"
+      - "Gemfile.lock"
+      - "Rakefile"
+      - "test/**"
+      - ".github/workflows/test.yml"
+  push:
+    branches: [main]
+    paths:
+      - "app.rb"
+      - "config.ru"
+      - "Gemfile"
+      - "Gemfile.lock"
+      - "Rakefile"
+      - "test/**"
+
+permissions:
+  contents: read
+
+jobs:
+  rake-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: bundle exec rake test

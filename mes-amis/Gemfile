@@ -1,0 +1,15 @@
+source 'https://rubygems.org'
+
+ruby '3.3.6'
+
+gem 'pg'
+gem 'puma'
+gem 'rackup'
+gem 'rake'
+gem 'sinatra'
+
+group :test do
+  gem 'minitest'
+  gem 'minitest-mock'
+  gem 'rack-test'
+end
