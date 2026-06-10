@@ -1,14 +1,12 @@
 # DevOps AWS Exercise
 
-At Mon Ami we use Terraform to manage our AWS assets and Github Actions config. The purpose of this exercise is to demonstrate Terraform and AWS skills as well as proficiency in leveraging AI to speed up delivery.
+At [company] we use Terraform to manage our AWS assets and Github Actions config. The purpose of this exercise is to demonstrate Terraform and AWS skills as well as proficiency in leveraging AI to speed up delivery.
 
 The goal of the exercise is not necessarily to complete every task, but to demonstrate that you understand the process and know how to approach it effectively.
 
 ## Scenario
 
 You have been given a Sinatra app in a Github account and have credentials to an empty AWS account. Your goal is to Terraform an AWS environment from zero, to a healthy application behind a load balancer with deployments from Github Actions on merge to main.
-
-[https://github.com/mes-amis/devops-terraform-exercise](https://github.com/mes-amis/devops-terraform-exercise)
 
 ### Getting Started
 
